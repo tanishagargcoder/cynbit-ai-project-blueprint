@@ -26,7 +26,7 @@ import type {
 // ---------------------------------------------------------------------------
 export const ASSUMPTIONS = {
   /** Blended cost of one person for one week, in INR. Placeholder value. */
-  blendedRateInrPerPersonWeek: 40_000,
+  blendedRateInrPerPersonWeek: 20_000,
   /** Baseline weeks for a trivially small project, before complexity is added. */
   baseWeeks: 3,
   /** Weeks added per complexity point. */
@@ -37,7 +37,7 @@ export const ASSUMPTIONS = {
 } as const;
 
 export const BUDGET_BANDS: Record<Exclude<Budget, "unsure">, { lo: number; hi: number; label: string }> = {
-  lean: { lo: 0, hi: 200_000, label: "under ₹2 lakh" },
+  lean: { lo: 0, hi: 200_000, label: "Under ₹2 lakh" },
   standard: { lo: 200_000, hi: 600_000, label: "₹2–6 lakh" },
   growth: { lo: 600_000, hi: 1_500_000, label: "₹6–15 lakh" },
   enterprise: { lo: 1_500_000, hi: Number.POSITIVE_INFINITY, label: "₹15 lakh and above" },
@@ -46,12 +46,12 @@ export const BUDGET_BANDS: Record<Exclude<Budget, "unsure">, { lo: number; hi: n
 // ---------------------------------------------------------------------------
 // Option catalogue (also used by the UI so labels live in one place)
 // ---------------------------------------------------------------------------
-export const SERVICE_OPTIONS: { id: ServiceId; label: string; blurb: string; weight: number }[] = [
-  { id: "ai", label: "AI automation", blurb: "Agents, LLM workflows, voice", weight: 3 },
-  { id: "app", label: "Web or mobile app", blurb: "Customer-facing product", weight: 3 },
-  { id: "saas", label: "SaaS platform", blurb: "Multi-user, subscription-based", weight: 4 },
-  { id: "cloud", label: "Cloud and migration", blurb: "AWS or Azure, legacy to modern", weight: 2 },
-  { id: "marketing", label: "Marketing and SEO", blurb: "Landing pages, tracking, search", weight: 1 },
+export const SERVICE_OPTIONS: { id: ServiceId; label: string; short: string; blurb: string; weight: number }[] = [
+  { id: "ai", label: "AI automation", short: "AI automation", blurb: "Agents, LLM workflows, voice", weight: 3 },
+  { id: "app", label: "Web or mobile app", short: "web or mobile app", blurb: "Customer-facing product", weight: 3 },
+  { id: "saas", label: "SaaS platform", short: "SaaS platform", blurb: "Multi-user, subscription-based", weight: 4 },
+  { id: "cloud", label: "Cloud and migration", short: "cloud migration", blurb: "AWS or Azure, legacy to modern", weight: 2 },
+  { id: "marketing", label: "Marketing and SEO", short: "marketing and SEO", blurb: "Landing pages, tracking, search", weight: 1 },
 ];
 
 export const GOAL_OPTIONS: { id: GoalId; label: string }[] = [
@@ -417,8 +417,8 @@ export function generateBlueprint(input: BlueprintInput): Blueprint {
     ...keywordFeatures,
   ].slice(0, 9);
 
-  const serviceLabels = input.services.map((s) => SERVICE_OPTIONS.find((o) => o.id === s)?.label ?? s);
-  const title = `${joinNatural(serviceLabels)} blueprint`;
+  const serviceNames = input.services.map((s) => SERVICE_OPTIONS.find((o) => o.id === s)?.short ?? s);
+  const title = `Blueprint for ${joinNatural(serviceNames)}`;
   const drivers = driversOf(input, keywordFeatures.length);
   const summary =
     `This looks like a ${label.toLowerCase()} project: roughly ${minWeeks} to ${maxWeeks} weeks across six phases, ` +

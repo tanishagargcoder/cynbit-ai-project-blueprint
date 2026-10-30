@@ -92,9 +92,9 @@ describe("generateBlueprint", () => {
     assert.ok(ai.questions.some((q) => /documents, systems or data/i.test(q)));
   });
 
-  it("names the title after the selected services", () => {
+  it("titles the plan after the selected services", () => {
     const bp = generateBlueprint(withInput({ services: ["ai", "saas"] }));
-    assert.equal(bp.title, "AI automation and SaaS platform blueprint");
+    assert.equal(bp.title, "Blueprint for AI automation and SaaS platform");
   });
 
   it("caps the feature list at nine", () => {

@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #edf0f2;
+  /* Faint drafting grid behind everything. */
+  background-image:
+    linear-gradient(to right, rgba(30, 79, 214, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 79, 214, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  color: #17233b;
+  font-family: var(--font-body), system-ui, sans-serif;
+  line-height: 1.55;
+}
+
+:focus-visible {
+  outline: 3px solid #1e4fd6;
+  outline-offset: 2px;
+}
+
+/* Visually hidden but available to screen readers and bots' eyes only. */
+.sr-only-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-flat {
+    box-shadow: none !important;
+    border-color: #17233b !important;
+  }
+}
