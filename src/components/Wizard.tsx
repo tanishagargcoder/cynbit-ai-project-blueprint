@@ -21,11 +21,11 @@ const DEFAULTS: BlueprintInput = {
   services: [],
   goals: [],
   idea: "",
-  scale: "medium",
-  integrations: "some",
-  compliance: "none",
-  urgency: "quarter",
-  budget: "unsure",
+  scale: "" as BlueprintInput["scale"],
+  integrations: "" as BlueprintInput["integrations"],
+  compliance: "" as BlueprintInput["compliance"],
+  urgency: "" as BlueprintInput["urgency"],
+  budget: "" as BlueprintInput["budget"],
 };
 
 const inputCls =

@@ -352,28 +352,47 @@ export function assessBudget(
   minPersonWeeks: number,
   maxPersonWeeks: number,
 ): { status: BudgetStatus; note: string } {
-  if (budget === "unsure") {
-    return { status: "unknown", note: "Share a budget range and we will shape the scope to fit it." };
+  // Handle an unanswered budget selection.
+  if (!budget || budget === "unsure") {
+    return {
+      status: "unknown",
+      note: "Share a budget range and we will shape the scope to fit it.",
+    };
   }
+
   const band = BUDGET_BANDS[budget];
+
+  // Safely handle an invalid or unrecognized budget value.
+  if (!band) {
+    return {
+      status: "unknown",
+      note: "Share a budget range and we will shape the scope to fit it.",
+    };
+  }
+
   const rate = ASSUMPTIONS.blendedRateInrPerPersonWeek;
   const estMin = minPersonWeeks * rate;
   const estMax = maxPersonWeeks * rate;
+
   if (estMin > band.hi) {
     return {
       status: "stretch",
       note: `This scope likely needs more than ${band.label}. We would propose a phased first release that fits.`,
     };
   }
+
   if (estMax < band.lo) {
     return {
       status: "under",
       note: `This scope sits below ${band.label}, so there is room for extra features or a longer polish phase.`,
     };
   }
-  return { status: "fits", note: `The scope looks workable within ${band.label}, to be confirmed in discovery.` };
-}
 
+  return {
+    status: "fits",
+    note: `The scope looks workable within ${band.label}, to be confirmed in discovery.`,
+  };
+}
 // ---------------------------------------------------------------------------
 // Public entry point
 // ---------------------------------------------------------------------------
